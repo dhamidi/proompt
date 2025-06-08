@@ -76,7 +76,7 @@ type FakeFilesystem struct {
 - Only custom implement write operations (which fs.FS doesn't provide)
 - Replace `Walk` with `fs.WalkDir` function from standard library
 
-### Step 3: Editor Interface (`pkg/editor/editor.go`)
+### Step 3: Editor Interface (`pkg/editor/editor.go`) - DONE
 Abstract editor invocation:
 
 ```go

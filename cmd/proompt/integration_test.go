@@ -8,6 +8,7 @@ import (
 	"testing/fstest"
 
 	"github.com/spf13/cobra"
+	"github.com/dhamidi/proompt/pkg/copier"
 	"github.com/dhamidi/proompt/pkg/editor"
 	"github.com/dhamidi/proompt/pkg/filesystem"
 	"github.com/dhamidi/proompt/pkg/picker"
@@ -43,7 +44,8 @@ func TestPickWorkflowWithoutPlaceholders(t *testing.T) {
 	parser := prompt.NewDefaultParser()
 
 	// Test the runPickCommand function directly
-	err := runPickCommand(manager, pick, ed, parser, fs)
+	cop := copier.NewFakeCopier()
+	err := runPickCommand(manager, pick, ed, parser, fs, cop)
 	if err != nil {
 		t.Fatalf("Pick command failed: %v", err)
 	}
@@ -301,7 +303,8 @@ func TestErrorHandlingPickerFailure(t *testing.T) {
 	parser := prompt.NewDefaultParser()
 
 	// Test runPickCommand directly
-	err := runPickCommand(manager, pick, ed, parser, fs)
+	cop := copier.NewFakeCopier()
+	err := runPickCommand(manager, pick, ed, parser, fs, cop)
 
 	// Should handle picker failure gracefully
 	if err == nil {
@@ -324,7 +327,8 @@ func TestErrorHandlingNoPrompts(t *testing.T) {
 	parser := prompt.NewDefaultParser()
 
 	// Test runPickCommand directly
-	err := runPickCommand(manager, pick, ed, parser, fs)
+	cop := copier.NewFakeCopier()
+	err := runPickCommand(manager, pick, ed, parser, fs, cop)
 
 	// Should handle no prompts gracefully
 	if err == nil {

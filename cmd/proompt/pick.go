@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/dhamidi/proompt/pkg/copier"
 	"github.com/dhamidi/proompt/pkg/editor"
 	"github.com/dhamidi/proompt/pkg/filesystem"
 	"github.com/dhamidi/proompt/pkg/picker"
@@ -18,13 +19,14 @@ func pickCmd(
 	ed editor.Editor,
 	parser prompt.Parser,
 	fs filesystem.Filesystem,
+	cop copier.Copier,
 ) *cobra.Command {
 	return &cobra.Command{
 		Use:   "pick",
 		Short: "Pick and process a prompt",
 		Long:  "Select a prompt, fill in placeholders, and output the final result.",
 		Run: func(cmd *cobra.Command, args []string) {
-			if err := runPickCommand(manager, pick, ed, parser, fs); err != nil {
+			if err := runPickCommand(manager, pick, ed, parser, fs, cop); err != nil {
 				fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 				os.Exit(1)
 			}
@@ -38,6 +40,7 @@ func runPickCommand(
 	ed editor.Editor,
 	parser prompt.Parser,
 	fs filesystem.Filesystem,
+	cop copier.Copier,
 ) error {
 	// Step 1: Get all prompts using manager.GetAllForPicker()
 	items, err := manager.GetAllForPicker()
@@ -70,6 +73,9 @@ func runPickCommand(
 	// If no placeholders, just output the content directly
 	if len(placeholders) == 0 {
 		fmt.Print(promptInfo.Content)
+		if err := cop.Copy(promptInfo.Content); err != nil {
+			fmt.Fprintf(os.Stderr, "Warning: failed to copy to clipboard: %v\n", err)
+		}
 		return nil
 	}
 
@@ -114,6 +120,9 @@ func runPickCommand(
 	// Step 7: Output final prompt to stdout
 	finalContent := parser.SubstitutePlaceholders(promptInfo.Content, values)
 	fmt.Print(finalContent)
+	if err := cop.Copy(finalContent); err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: failed to copy to clipboard: %v\n", err)
+	}
 
 	return nil
 }

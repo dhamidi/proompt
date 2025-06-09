@@ -211,7 +211,7 @@ type DefaultManager struct {
 
 ## Phase 3: CLI Commands
 
-### Step 8: List Command (`cmd/proompt/list.go`)
+### Step 8: List Command (`cmd/proompt/list.go`) - DONE
 ```go
 func listCmd(manager prompt.Manager) *cobra.Command {
     return &cobra.Command{

@@ -41,6 +41,11 @@ func NewRealFilesystem(rootDir string) *RealFilesystem {
 	}
 }
 
+// Open implements fs.FS
+func (rfs *RealFilesystem) Open(name string) (fs.File, error) {
+	return rfs.readFS.Open(name)
+}
+
 // ReadFile implements fs.ReadFileFS
 func (rfs *RealFilesystem) ReadFile(name string) ([]byte, error) {
 	return fs.ReadFile(rfs.readFS, name)

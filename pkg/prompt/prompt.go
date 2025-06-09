@@ -55,6 +55,8 @@ func (m *DefaultManager) List() ([]PromptInfo, error) {
 	}
 
 	var prompts []PromptInfo
+	seen := make(map[string]bool) // Track absolute paths to avoid duplicates
+	
 	for _, location := range locations {
 		files, err := m.Filesystem.ReadDir(location.Path)
 		if err != nil {
@@ -63,7 +65,21 @@ func (m *DefaultManager) List() ([]PromptInfo, error) {
 
 		for _, file := range files {
 			if !file.IsDir() && isPromptFile(file.Name()) {
-				content, err := m.Filesystem.ReadFile(location.Path + "/" + file.Name())
+				fullPath := location.Path + "/" + file.Name()
+				
+				// Convert to absolute path for deduplication
+				absPath, err := filepath.Abs(fullPath)
+				if err != nil {
+					absPath = fullPath // Fallback to original path
+				}
+				
+				// Skip if we've already seen this file path
+				if seen[absPath] {
+					continue
+				}
+				seen[absPath] = true
+				
+				content, err := m.Filesystem.ReadFile(fullPath)
 				if err != nil {
 					continue // Skip files that can't be read
 				}
@@ -72,7 +88,7 @@ func (m *DefaultManager) List() ([]PromptInfo, error) {
 					Name:    removeExtension(file.Name()),
 					Content: string(content),
 					Source:  location.Type,
-					Path:    location.Path + "/" + file.Name(),
+					Path:    fullPath,
 				})
 			}
 		}

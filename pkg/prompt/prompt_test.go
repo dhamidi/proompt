@@ -213,6 +213,43 @@ func TestDefaultManagerGetAllForPicker(t *testing.T) {
 	}
 }
 
+func TestDefaultManagerListDeduplication(t *testing.T) {
+	// Create fake filesystem with test prompts
+	fs := filesystem.NewFakeFilesystem()
+	fs.MapFS["prompts/test.md"] = &fstest.MapFile{
+		Data: []byte("Test content"),
+		Mode: 0644,
+	}
+
+	// Create fake resolver that returns duplicate locations pointing to same directory
+	// This simulates the real bug where "directory" and "project" both resolve to "prompts/"
+	resolver := NewFakeLocationResolver()
+	resolver.Locations = []PromptLocation{
+		{Type: "directory", Path: "prompts"},
+		{Type: "project", Path: "prompts"}, // Same path, different type
+	}
+
+	manager := NewDefaultManager(fs, resolver)
+
+	prompts, err := manager.List()
+	if err != nil {
+		t.Fatalf("List() failed: %v", err)
+	}
+
+	// Should only return one prompt, not duplicates
+	if len(prompts) != 1 {
+		t.Errorf("Expected 1 unique prompt after deduplication, got %d", len(prompts))
+		for i, prompt := range prompts {
+			t.Logf("Prompt %d: Name=%s, Source=%s, Path=%s", i, prompt.Name, prompt.Source, prompt.Path)
+		}
+	}
+
+	// Verify it's the correct prompt
+	if prompts[0].Name != "test" {
+		t.Errorf("Expected prompt name 'test', got '%s'", prompts[0].Name)
+	}
+}
+
 func TestIsPromptFile(t *testing.T) {
 	tests := []struct {
 		filename string

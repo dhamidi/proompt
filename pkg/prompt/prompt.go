@@ -1,6 +1,9 @@
 package prompt
 
-import "github.com/dhamidi/proompt/pkg/picker"
+import (
+	"github.com/dhamidi/proompt/pkg/filesystem"
+	"github.com/dhamidi/proompt/pkg/picker"
+)
 
 // Manager interface handles prompt management
 type Manager interface {
@@ -21,19 +24,14 @@ type PromptInfo struct {
 
 // DefaultManager implements prompt management
 type DefaultManager struct {
-	Filesystem Filesystem
+	Filesystem filesystem.Filesystem
 	Resolver   LocationResolver
 }
 
 // NewDefaultManager creates a new DefaultManager
-func NewDefaultManager(fs Filesystem, resolver LocationResolver) *DefaultManager {
+func NewDefaultManager(fs filesystem.Filesystem, resolver LocationResolver) *DefaultManager {
 	return &DefaultManager{
 		Filesystem: fs,
 		Resolver:   resolver,
 	}
-}
-
-// Filesystem interface for prompt manager
-type Filesystem interface {
-	// Will be filled in later to match filesystem.Filesystem
 }

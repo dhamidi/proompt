@@ -130,7 +130,7 @@ type FakePicker struct {
 
 ## Phase 2: Prompt Management
 
-### Step 5: Prompt Location Resolution (`pkg/prompt/resolver.go`)
+### Step 5: Prompt Location Resolution (`pkg/prompt/resolver.go`) - DONE
 Implement the three-level prompt hierarchy:
 
 ```go

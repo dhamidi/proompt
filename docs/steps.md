@@ -99,7 +99,7 @@ type FakeEditor struct {
 - `FakeEditor` records invocations and can simulate file modifications
 - Handle `$EDITOR` environment variable with sensible defaults
 
-### Step 4: Picker Interface (`pkg/picker/picker.go`)
+### Step 4: Picker Interface (`pkg/picker/picker.go`) - DONE
 Abstract prompt selection:
 
 ```go

@@ -3,6 +3,7 @@ package filesystem
 import (
 	"io/fs"
 	"os"
+	"path/filepath"
 	"testing/fstest"
 )
 
@@ -48,16 +49,25 @@ func (rfs *RealFilesystem) Open(name string) (fs.File, error) {
 
 // ReadFile implements fs.ReadFileFS
 func (rfs *RealFilesystem) ReadFile(name string) ([]byte, error) {
+	if filepath.IsAbs(name) {
+		return os.ReadFile(name)
+	}
 	return fs.ReadFile(rfs.readFS, name)
 }
 
 // Stat implements fs.StatFS
 func (rfs *RealFilesystem) Stat(name string) (fs.FileInfo, error) {
+	if filepath.IsAbs(name) {
+		return os.Stat(name)
+	}
 	return fs.Stat(rfs.readFS, name)
 }
 
 // ReadDir implements fs.ReadDirFS
 func (rfs *RealFilesystem) ReadDir(name string) ([]fs.DirEntry, error) {
+	if filepath.IsAbs(name) {
+		return os.ReadDir(name)
+	}
 	return fs.ReadDir(rfs.readFS, name)
 }
 

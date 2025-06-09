@@ -67,12 +67,10 @@ func (r *DefaultLocationResolver) GetPromptPaths() ([]PromptLocation, error) {
 	// 4. User level: $XDG_CONFIG_HOME/proompt/prompts/
 	if userConfigDir, err := r.Filesystem.UserConfigDir(); err == nil {
 		userPromptsPath := filepath.Join(userConfigDir, "proompt", "prompts")
-		if info, err := r.Filesystem.Stat(userPromptsPath); err == nil && info.IsDir() {
-			locations = append(locations, PromptLocation{
-				Type: "user",
-				Path: userPromptsPath,
-			})
-		}
+		locations = append(locations, PromptLocation{
+			Type: "user",
+			Path: userPromptsPath,
+		})
 	}
 
 	return locations, nil

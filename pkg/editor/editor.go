@@ -1,6 +1,7 @@
 package editor
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 )
@@ -35,6 +36,7 @@ func (re *RealEditor) Edit(filepath string) error {
 type FakeEditor struct {
 	EditedFiles  []string
 	WriteContent func(path string) []byte
+	ShouldFail   bool
 }
 
 // NewFakeEditor creates a new FakeEditor
@@ -46,6 +48,10 @@ func NewFakeEditor() *FakeEditor {
 
 // Edit simulates editing by recording the file and optionally modifying it
 func (fe *FakeEditor) Edit(filepath string) error {
+	if fe.ShouldFail {
+		return errors.New("editor failed")
+	}
+
 	fe.EditedFiles = append(fe.EditedFiles, filepath)
 	
 	// If WriteContent function is provided, simulate user modifications

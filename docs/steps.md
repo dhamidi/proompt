@@ -410,12 +410,12 @@ func main() {
 - **Manager tests**: Test prompt discovery and management using fake filesystem
 - **Command tests**: Test CLI commands using all fake implementations
 
-### Step 18: Integration Tests
+### Step 18: Integration Tests - DONE
 - Test complete pick workflow end-to-end with fake implementations
 - Test error handling (missing editor, picker failures, etc.)
 - Test different prompt hierarchy scenarios
 
-### Step 19: Error Handling
+### Step 19: Error Handling - DONE
 - Graceful handling of missing picker/editor commands
 - Clear error messages for invalid prompt names
 - Proper handling of file permission issues

@@ -75,6 +75,7 @@ func (p *RealPicker) Pick(items []PickerItem) (PickerItem, error) {
 type FakePicker struct {
 	SelectedIndex int
 	Selections    []PickerItem
+	ShouldFail    bool
 }
 
 // NewFakePicker creates a new FakePicker
@@ -86,6 +87,10 @@ func NewFakePicker() *FakePicker {
 
 // Pick returns a predetermined selection for testing
 func (p *FakePicker) Pick(items []PickerItem) (PickerItem, error) {
+	if p.ShouldFail {
+		return PickerItem{}, errors.New("picker failed")
+	}
+
 	if len(items) == 0 {
 		return PickerItem{}, errors.New("no items to pick from")
 	}

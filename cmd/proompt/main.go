@@ -5,14 +5,16 @@ import (
 	"os"
 
 	"github.com/dhamidi/proompt/pkg/config"
+	"github.com/dhamidi/proompt/pkg/editor"
 	"github.com/dhamidi/proompt/pkg/filesystem"
+	"github.com/dhamidi/proompt/pkg/picker"
 	"github.com/dhamidi/proompt/pkg/prompt"
 	"github.com/spf13/cobra"
 )
 
 func main() {
-	// Load configuration (not used yet, but prepared for future commands)
-	_ = config.Load()
+	// Load configuration
+	cfg := config.Load()
 
 	// Get current working directory for filesystem root
 	cwd, err := os.Getwd()
@@ -25,6 +27,8 @@ func main() {
 	fs := filesystem.NewRealFilesystem(cwd)
 	resolver := prompt.NewDefaultLocationResolver(fs)
 	manager := prompt.NewDefaultManager(fs, resolver)
+	pick := picker.NewRealPicker(cfg.Picker)
+	ed := editor.NewRealEditor(cfg.Editor)
 
 	// Create root command
 	rootCmd := &cobra.Command{
@@ -37,6 +41,7 @@ func main() {
 	rootCmd.AddCommand(
 		listCmd(manager),
 		showCmd(manager),
+		editCmd(manager, pick, ed),
 	)
 
 	if err := rootCmd.Execute(); err != nil {

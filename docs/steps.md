@@ -238,7 +238,7 @@ func showCmd(manager prompt.Manager) *cobra.Command {
 }
 ```
 
-### Step 10: Edit Command (`cmd/proompt/edit.go`)
+### Step 10: Edit Command (`cmd/proompt/edit.go`) - DONE
 ```go
 func editCmd(manager prompt.Manager, picker picker.Picker, editor editor.Editor) *cobra.Command {
     cmd := &cobra.Command{

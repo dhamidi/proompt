@@ -224,7 +224,7 @@ func listCmd(manager prompt.Manager) *cobra.Command {
 }
 ```
 
-### Step 9: Show Command (`cmd/proompt/show.go`)
+### Step 9: Show Command (`cmd/proompt/show.go`) - DONE
 ```go
 func showCmd(manager prompt.Manager) *cobra.Command {
     return &cobra.Command{

@@ -36,6 +36,7 @@ func main() {
 	// Add subcommands
 	rootCmd.AddCommand(
 		listCmd(manager),
+		showCmd(manager),
 	)
 
 	if err := rootCmd.Execute(); err != nil {

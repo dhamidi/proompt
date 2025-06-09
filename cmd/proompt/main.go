@@ -29,6 +29,7 @@ func main() {
 	manager := prompt.NewDefaultManager(fs, resolver)
 	pick := picker.NewRealPicker(cfg.Picker)
 	ed := editor.NewRealEditor(cfg.Editor)
+	parser := prompt.NewDefaultParser()
 
 	// Create root command
 	rootCmd := &cobra.Command{
@@ -43,6 +44,7 @@ func main() {
 		showCmd(manager),
 		editCmd(manager, pick, ed),
 		rmCmd(manager, pick),
+		pickCmd(manager, pick, ed, parser, fs),
 	)
 
 	if err := rootCmd.Execute(); err != nil {

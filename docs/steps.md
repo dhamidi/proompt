@@ -275,7 +275,7 @@ func rmCmd(manager prompt.Manager, picker picker.Picker) *cobra.Command {
 
 ## Phase 4: Core Pick Functionality
 
-### Step 12: Pick Command Implementation (`cmd/proompt/pick.go`)
+### Step 12: Pick Command Implementation (`cmd/proompt/pick.go`) - DONE
 The heart of the application:
 
 ```go

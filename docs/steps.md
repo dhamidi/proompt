@@ -158,7 +158,7 @@ type FakeLocationResolver struct {
 3. Project-local level: Same as project but in `.git/info/prompts/`
 4. User level: `$XDG_CONFIG_HOME/proompt/prompts/`
 
-### Step 6: Prompt Parser (`pkg/prompt/parser.go`)
+### Step 6: Prompt Parser (`pkg/prompt/parser.go`) - DONE
 Parse placeholder syntax from prompt content:
 
 ```go

@@ -184,7 +184,7 @@ type FakeParser struct {
 - Handle `$$` escaping for literal `$`
 - Use regex for robust parsing: `\$\{([^}:]+)(?::-([^}]*))?\}`
 
-### Step 7: Prompt Manager (`pkg/prompt/prompt.go`)
+### Step 7: Prompt Manager (`pkg/prompt/prompt.go`) - DONE
 Main prompt management functionality:
 
 ```go

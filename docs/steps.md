@@ -305,7 +305,7 @@ func pickCmd(
 6. Read back values and substitute with `parser.SubstitutePlaceholders()`
 7. Output final prompt to stdout
 
-### Step 13: Temporary File Generation
+### Step 13: Temporary File Generation - DONE
 Create the placeholder editing experience:
 
 ```go
@@ -329,7 +329,7 @@ func generatePlaceholderFile(placeholders []Placeholder, originalContent string)
 }
 ```
 
-### Step 14: Value Parsing from Editor
+### Step 14: Value Parsing from Editor - DONE
 Parse edited values from the temporary file:
 
 ```go
@@ -354,7 +354,7 @@ func parseEditedValues(content string) (map[string]string, error) {
 
 ## Phase 5: Configuration and Integration
 
-### Step 15: Configuration Management (`pkg/config/config.go`)
+### Step 15: Configuration Management (`pkg/config/config.go`) - DONE
 Handle environment variables and defaults:
 
 ```go
@@ -371,7 +371,7 @@ func Load() *Config {
 }
 ```
 
-### Step 16: Main CLI Integration (`cmd/proompt/main.go`)
+### Step 16: Main CLI Integration (`cmd/proompt/main.go`) - DONE
 Wire everything together:
 
 ```go
@@ -404,7 +404,7 @@ func main() {
 
 ## Phase 6: Testing Strategy
 
-### Step 17: Unit Tests for Each Component
+### Step 17: Unit Tests for Each Component - DONE
 - **Filesystem tests**: Verify fake implementation matches real behavior
 - **Parser tests**: Test placeholder parsing and substitution with various edge cases
 - **Manager tests**: Test prompt discovery and management using fake filesystem

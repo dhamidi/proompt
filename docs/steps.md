@@ -259,7 +259,7 @@ func editCmd(manager prompt.Manager, picker picker.Picker, editor editor.Editor)
 }
 ```
 
-### Step 11: Remove Command (`cmd/proompt/rm.go`)
+### Step 11: Remove Command (`cmd/proompt/rm.go`) - DONE
 ```go
 func rmCmd(manager prompt.Manager, picker picker.Picker) *cobra.Command {
     return &cobra.Command{

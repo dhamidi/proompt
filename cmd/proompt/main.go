@@ -42,6 +42,7 @@ func main() {
 		listCmd(manager),
 		showCmd(manager),
 		editCmd(manager, pick, ed),
+		rmCmd(manager, pick),
 	)
 
 	if err := rootCmd.Execute(); err != nil {

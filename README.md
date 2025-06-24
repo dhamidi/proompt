@@ -8,7 +8,7 @@ Proompt helps you organize and reuse prompts for Large Language Models (LLMs) wi
 
 - **4-level prompt hierarchy**: directory, project, project-local, and user level prompts
 - **Placeholder substitution**: Use `${VAR}` and `${VAR:-default}` syntax in your prompts
-- **Interactive workflow**: Pick prompts, fill in placeholders via your editor, and get the processed result
+- **Interactive workflow**: Pick prompts, edit variables and template content via markdown with YAML frontmatter
 - **Multiple storage locations**: Store prompts at different scopes for different use cases
 
 ## Installation
@@ -87,24 +87,23 @@ Code:
 ${CODE}
 ```
 
-When you run `proompt pick` and select this prompt, you'll get an editor with:
+When you run `proompt pick` and select this prompt, you'll get an editor with a markdown file containing:
 
-```
-LANGUAGE=JavaScript
-FOCUS=general best practices
-CODE=
-### Lines starting with # are ignored
-# Save empty file to abort
-### Full prompt:
-# Review the following ${LANGUAGE:-JavaScript} code for:
-# - Code quality
-# - Security issues
-# - Performance concerns
-# 
-# Focus on ${FOCUS:-general best practices}.
-# 
-# Code:
-# ${CODE}
+```markdown
+---
+CODE: ""
+FOCUS: general best practices
+LANGUAGE: JavaScript
+---
+Review the following ${LANGUAGE:-JavaScript} code for:
+- Code quality
+- Security issues
+- Performance concerns
+
+Focus on ${FOCUS:-general best practices}.
+
+Code:
+${CODE}
 ```
 
-Fill in your values, save, and get the processed prompt output.
+Edit the variables in the YAML frontmatter (between the `---` lines) and/or modify the template content below. Save to get the processed prompt output.

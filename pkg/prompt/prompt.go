@@ -55,7 +55,8 @@ func (m *DefaultManager) List() ([]PromptInfo, error) {
 	}
 
 	var prompts []PromptInfo
-	seen := make(map[string]bool) // Track absolute paths to avoid duplicates
+	seenPaths := make(map[string]bool) // Track absolute paths to avoid duplicates
+	seenNames := make(map[string]bool) // Track prompt names to respect hierarchy
 	
 	for _, location := range locations {
 		files, err := m.Filesystem.ReadDir(location.Path)
@@ -74,10 +75,18 @@ func (m *DefaultManager) List() ([]PromptInfo, error) {
 				}
 				
 				// Skip if we've already seen this file path
-				if seen[absPath] {
+				if seenPaths[absPath] {
 					continue
 				}
-				seen[absPath] = true
+				seenPaths[absPath] = true
+				
+				promptName := removeExtension(file.Name())
+				
+				// Skip if we've already seen this prompt name (hierarchy respect)
+				if seenNames[promptName] {
+					continue
+				}
+				seenNames[promptName] = true
 				
 				content, err := m.Filesystem.ReadFile(fullPath)
 				if err != nil {
@@ -85,7 +94,7 @@ func (m *DefaultManager) List() ([]PromptInfo, error) {
 				}
 
 				prompts = append(prompts, PromptInfo{
-					Name:    removeExtension(file.Name()),
+					Name:    promptName,
 					Content: string(content),
 					Source:  location.Type,
 					Path:    fullPath,

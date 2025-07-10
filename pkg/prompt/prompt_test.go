@@ -272,6 +272,49 @@ func TestIsPromptFile(t *testing.T) {
 	}
 }
 
+func TestDefaultManagerGetWithSameNamePrompts(t *testing.T) {
+	// Create fake filesystem with same-named prompts at different levels
+	fs := filesystem.NewFakeFilesystem()
+	fs.MapFS["user/prompts/test.md"] = &fstest.MapFile{
+		Data: []byte("User level content"),
+		Mode: 0644,
+	}
+	fs.MapFS["project/prompts/test.md"] = &fstest.MapFile{
+		Data: []byte("Project level content"),
+		Mode: 0644,
+	}
+	fs.MapFS["prompts/test.md"] = &fstest.MapFile{
+		Data: []byte("Directory level content"),
+		Mode: 0644,
+	}
+
+	// Create fake resolver with correct hierarchy: directory > project > user
+	// This simulates what the real resolver does
+	resolver := NewFakeLocationResolver()
+	resolver.Locations = []PromptLocation{
+		{Type: "directory", Path: "prompts"},
+		{Type: "project", Path: "project/prompts"},
+		{Type: "user", Path: "user/prompts"},
+	}
+
+	manager := NewDefaultManager(fs, resolver)
+
+	// Get should return the highest priority prompt (directory level)
+	prompt, err := manager.Get("test")
+	if err != nil {
+		t.Fatalf("Get() failed: %v", err)
+	}
+
+	// Should return the highest priority prompt (directory level)
+	if prompt.Content != "Directory level content" {
+		t.Errorf("Expected directory level content, got '%s'", prompt.Content)
+	}
+
+	if prompt.Source != "directory" {
+		t.Errorf("Expected source 'directory', got '%s'", prompt.Source)
+	}
+}
+
 func TestRemoveExtension(t *testing.T) {
 	tests := []struct {
 		filename string
